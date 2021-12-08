@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import LogoImg from '../../assets/logo.png';
-import HeroImg from '../../assets/hero.png';
-import NavBar from '../../components/navbar';
-import BurgerNavigation from '../../components/burgerNavigation';
+import LogoImg from '@/assets/logo.png';
+import HeroImg from '@/assets/hero.png';
+import NavBar from '@/components/navbar';
+import BurgerNavigation from '@/components/burgerNavigation';
 
 const hamburgerWidth = 45;
 const hamburgerHeight = hamburgerWidth / (35 / 50);
@@ -15,17 +15,25 @@ const magnifierHeight = magnifierWidth / (26 / 25);
 const Header = () => {
     const [isClicked, setIsClicked] = useState(false);
 
+    useEffect(() => {
+        const body = document.getElementsByTagName('body')[0];
+        if (isClicked) {
+            body.classList.add('overflow-hidden');
+        } else {
+            body.classList.remove('overflow-hidden');
+        }
+    }, [isClicked]);
+
     return (
         <header className="px-5 py-5 relative flex items-center bg-hci-header sm:bg-transparent sm:h-80">
-            <div className="hidden sm:block z--1">
-                <Image
-                    src={HeroImg}
-                    layout="fill"
-                    objectFit="cover"
-                    placeholder="blur"
-                    alt="Hero image"
-                />
-            </div>
+            <Image
+                className="hidden sm:block z--1"
+                src={HeroImg}
+                layout="fill"
+                objectFit="cover"
+                placeholder="blur"
+                alt="Hero image"
+            />
 
             <main className="max-w-4xl mx-auto flex-grow flex flex-col">
                 <div className="z-10 flex justify-between items-center sm:mb-16">
@@ -49,7 +57,7 @@ const Header = () => {
                         <div className="w-8" />
                         <Image
                             onClick={() => setIsClicked(!isClicked)}
-                            className={`cursor-pointer z-50 transition-all ease-linear duration-500 ${
+                            className={`transform scale-75 cursor-pointer z-50 transition-all ease-linear duration-500 ${
                                 isClicked ? 'transform rotate-90' : ''
                             }`}
                             src={'/hamburger.svg'}
